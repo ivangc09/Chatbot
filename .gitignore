@@ -1,3 +1,4 @@
 /env
 /__pycache__/
-/modelo_chatbot
+/Chatbot_Multilabel/
+*.zip
