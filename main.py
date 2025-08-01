@@ -8,6 +8,7 @@ import json
 import gdown
 import os
 import zipfile
+import uvicorn
 
 #url = "https://drive.google.com/uc?id=1LFEOEliakObh1GAhTFPGuEHR7vYPwrTE"
 #output = "modelo_chatbot.zip"
@@ -94,3 +95,8 @@ def responder(pregunta: Pregunta):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
