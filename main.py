@@ -31,6 +31,9 @@ with open("respuestas.json", encoding="utf-8") as f:
 with open("id2label.json", encoding="utf-8") as f:
     id2label = json.load(f)
 
+assert os.path.exists("respuestas.json"), "❌ respuestas.json no encontrado"
+assert os.path.exists("id2label.json"), "❌ id2label.json no encontrado"
+
 
 MODEL_PATH = os.path.abspath("Chatbot_Multilabel")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
