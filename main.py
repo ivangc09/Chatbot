@@ -32,9 +32,6 @@ with open("respuestas.json", encoding="utf-8") as f:
 with open("id2label.json", encoding="utf-8") as f:
     id2label = json.load(f)
 
-assert os.path.exists("respuestas.json"), "❌ respuestas.json no encontrado"
-assert os.path.exists("id2label.json"), "❌ id2label.json no encontrado"
-
 
 MODEL_PATH = os.path.abspath("Chatbot_Multilabel")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
@@ -80,7 +77,14 @@ def responder(pregunta: Pregunta):
                 temas.append(etiqueta)
 
         if not raza:
-            return {"respuestas": [{"categoria": "desconocido", "respuesta": "No pude identificar la raza mencionada."}]}
+            return {
+                "respuestas": [
+                    {
+                        "categoria": etiqueta,
+                        "respuesta": f"No tengo información detallada sobre '{etiqueta}' o no pertenece a una raza conocida."
+                    } for etiqueta in etiquetas
+                ]
+            }
         
         if not temas:
             temas = ["info_general"]
@@ -88,8 +92,15 @@ def responder(pregunta: Pregunta):
         resultados = []
 
         for tema in temas:
-            respuesta = respuestas.get(raza, {}).get(tema, f"No tengo información sobre {tema} para {raza}")
-            resultados.append({"categoria": f"{raza}_{tema}", "respuesta": respuesta})
+            if isinstance(respuestas.get(raza), dict):
+                respuesta = respuestas[raza].get(tema, f"No tengo información sobre {tema} para {raza}")
+            else:
+                respuesta = f"No tengo información sobre {tema} para {raza}"
+
+            resultados.append({
+                "categoria": f"{raza}_{tema}",
+                "respuesta": respuesta
+            })
 
         return {"respuestas": resultados}
     
