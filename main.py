@@ -66,13 +66,28 @@ def responder(pregunta: Pregunta):
 
         print("Etiquetas predichas:", etiquetas)
 
+        razas_validas = set(respuestas.keys())
+
         
         raza = None
         temas = []
 
         for etiqueta in etiquetas:
-            if etiqueta in respuestas:
+            if etiqueta in ["sintoma_vomito","sintoma_falta_apetito","sintoma_moco_nasal","sintoma_ojos_rojos","sintoma_convulsiones"]:
+                sintoma = etiqueta
+                respuesta = respuestas[sintoma]
+                return {
+                    "respuestas": [
+                        {
+                            "categoria": sintoma,
+                            "respuesta": respuesta
+                        }
+                    ]
+                }
+
+            if etiqueta in razas_validas:
                 raza = etiqueta
+
             elif etiqueta in ["cuidados","enfermedad","info_general"]:
                 temas.append(etiqueta)
 
