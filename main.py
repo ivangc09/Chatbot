@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from fastapi.middleware.cors import CORSMiddleware
 import torch
 import torch.nn.functional as F
 import json
