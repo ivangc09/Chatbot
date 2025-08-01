@@ -13,14 +13,17 @@ import zipfile
 #output = "modelo_chatbot.zip"
 
 url = "https://drive.google.com/uc?id=1EBgyASxpQG1cVdmtFF-ELsPi_Z8FZdHM"
-output = "Chatbot_Multilabel.zip"
+zip_path = "Chatbot_Multilabel.zip"
+model_dir = "Chatbot_Multilabel"
 
-# Descagar el modelo del chatbot si no existe
-if not os.path.exists("Chatbot_Multilabel"):
-    gdown.download(url, output, quiet=False)
+if not os.path.exists(model_dir):
+    gdown.download(url, zip_path, quiet=False)
 
-    with zipfile.ZipFile(output, 'r') as zip_ref:
-        zip_ref.extractall("Chatbot_Multilabel")
+    if not zipfile.is_zipfile(zip_path):
+        raise Exception("ZIP no válido")
+
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(model_dir)
 
 with open("respuestas.json", encoding="utf-8") as f:
     respuestas = json.load(f)
