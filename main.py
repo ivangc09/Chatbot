@@ -35,6 +35,14 @@ model.eval()
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # !Cambiarlo cuando lo levante
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class Pregunta(BaseModel):
     mensaje: str
 
